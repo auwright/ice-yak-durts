@@ -6,41 +6,80 @@
   <title>Durts Table</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 2em; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1em; margin-bottom: 3em; }
     th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     th { background-color: #f4f4f4; }
     a { text-decoration: none; color: #007BFF; }
+    h2 { margin-top: 2em; color: #444; }
   </style>
 </head>
 <body>
-  <h1>Durts - 6 Column Table</h1>
+  <h1>Durts - 6 Column Tables</h1>
   <p><a href="index.html">Back to Homepage</a></p>
 
+  <!-- Table 1: 301 -->
+  <h2>301</h2>
   <table>
     <thead>
       <tr>
-        <th>Game</th>
-        <th>Books</th>
-        <th>Player</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
         <th>Date</th>
+        <th>Status</th>
+        <th>Remarks</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>301</td>
-        <td>Alpha</td>
-        <td>Type A</td>
-        <td>2025-05-01</td>
+        <td>301-001</td>
+        <td>Gamma</td>
+        <td>Control</td>
+        <td>2025-05-04</td>
+        <td>Active</td>
+        <td>Main system</td>
       </tr>
       <tr>
-        <td>002</td>
-        <td>Beta</td>
-        <td>Type B</td>
-        <td>2025-05-03</td>
-        <td>Pending</td>
-        <td>Review needed</td>
+        <td>301-002</td>
+        <td>Delta</td>
+        <td>Sensor</td>
+        <td>2025-05-05</td>
+        <td>Offline</td>
+        <td>Maintenance scheduled</td>
       </tr>
-      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+
+  <!-- Table 2: 301 DI/DO -->
+  <h2>301 DI/DO</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Channel</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Signal</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>301-DI-01</td>
+        <td>DI1</td>
+        <td>Digital In</td>
+        <td>High</td>
+        <td>1</td>
+        <td>Door Sensor</td>
+      </tr>
+      <tr>
+        <td>301-DO-01</td>
+        <td>DO1</td>
+        <td>Digital Out</td>
+        <td>Low</td>
+        <td>0</td>
+        <td>Alarm Output</td>
+      </tr>
     </tbody>
   </table>
 </body>
