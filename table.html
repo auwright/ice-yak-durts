@@ -135,7 +135,7 @@
         row.classList.remove('highlight');
         const bookText = row.cells[0].textContent;
         const bookScore = parseBooks(bookText);
-        if (input > bookScore) {
+        if (input < bookScore) {
           row.classList.add('highlight');
           found = true;
         }
