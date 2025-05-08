@@ -13,7 +13,7 @@
     h2 { margin-top: 2em; color: #444; }
     .highlight { background-color: #d4edda !important; }
     .score-input { margin-bottom: 2em; }
-    input[type="number"] { padding: 6px; font-size: 1em; width: 100px; }
+    select, input[type="number"] { padding: 6px; font-size: 1em; }
     button { padding: 6px 12px; font-size: 1em; margin-left: 10px; cursor: pointer; }
   </style>
 </head>
@@ -22,22 +22,27 @@
   <p><a href="index.html">Back to Homepage</a></p>
 
   <div class="score-input">
+    <label for="gameType">Choose a Game Type:</label>
+    <select id="gameType">
+      <option value="301">301</option>
+      <option value="301-di-do">301 DI/DO</option>
+      <option value="501">501</option>
+      <option value="901">901</option>
+      <option value="round">Round the Clock</option>
+    </select>
+    <br /><br />
     <label for="userScore">Enter your Book Score:</label>
     <input type="number" id="userScore" step="0.01" />
     <button onclick="checkBookScore()">Check Score</button>
     <p id="resultMessage"></p>
   </div>
 
-  <!-- Tables (unchanged except added class for targeting rows) -->
+  <!-- Tables with IDs for targeting -->
 
   <h2>301</h2>
-  <table>
+  <table id="table-301">
     <thead>
-      <tr>
-        <th>Books</th>
-        <th>Player</th>
-        <th>Date</th>
-      </tr>
+      <tr><th>Books</th><th>Player</th><th>Date</th></tr>
     </thead>
     <tbody>
       <tr><td>*6 1/3 Books</td><td>SW</td><td>11/08/2024</td></tr>
@@ -47,13 +52,9 @@
   </table>
 
   <h2>301 DI/DO</h2>
-  <table>
+  <table id="table-301-di-do">
     <thead>
-      <tr>
-        <th>Books</th>
-        <th>Player</th>
-        <th>Date</th>
-      </tr>
+      <tr><th>Books</th><th>Player</th><th>Date</th></tr>
     </thead>
     <tbody>
       <tr><td>*7 2/3 Books</td><td>SW</td><td>10/11/2024</td></tr>
@@ -62,13 +63,9 @@
   </table>
 
   <h2>501</h2>
-  <table>
+  <table id="table-501">
     <thead>
-      <tr>
-        <th>Books</th>
-        <th>Player</th>
-        <th>Date</th>
-      </tr>
+      <tr><th>Books</th><th>Player</th><th>Date</th></tr>
     </thead>
     <tbody>
       <tr><td>*9 Books</td><td>SW</td><td>03/26/2025</td></tr>
@@ -77,13 +74,9 @@
   </table>
 
   <h2>901</h2>
-  <table>
+  <table id="table-901">
     <thead>
-      <tr>
-        <th>Books</th>
-        <th>Player</th>
-        <th>Date</th>
-      </tr>
+      <tr><th>Books</th><th>Player</th><th>Date</th></tr>
     </thead>
     <tbody>
       <tr><td>*20 Books</td><td>SW</td><td>12/09/2024</td></tr>
@@ -92,13 +85,9 @@
   </table>
 
   <h2>Round the Clock</h2>
-  <table>
+  <table id="table-round">
     <thead>
-      <tr>
-        <th>Books</th>
-        <th>Player</th>
-        <th>Date</th>
-      </tr>
+      <tr><th>Books</th><th>Player</th><th>Date</th></tr>
     </thead>
     <tbody>
       <tr><td>*10 1/3 Books</td><td>AW</td><td>01/14/2025</td></tr>
@@ -108,7 +97,6 @@
 
   <script>
     function parseBooks(text) {
-      // Remove asterisk, "Books", and trim
       const cleaned = text.replace('*', '').replace('Books', '').trim();
       const parts = cleaned.split(' ');
 
@@ -127,12 +115,19 @@
 
     function checkBookScore() {
       const input = parseFloat(document.getElementById('userScore').value);
+      const selectedGame = document.getElementById('gameType').value;
       const resultMessage = document.getElementById('resultMessage');
-      const rows = document.querySelectorAll('table tbody tr');
+
+      // Clear previous highlights
+      document.querySelectorAll('table tbody tr').forEach(row => row.classList.remove('highlight'));
+
+      // Get only the selected table's rows
+      const table = document.getElementById(`table-${selectedGame}`);
+      const rows = table.querySelectorAll('tbody tr');
+
       let found = false;
 
       rows.forEach(row => {
-        row.classList.remove('highlight');
         const bookText = row.cells[0].textContent;
         const bookScore = parseBooks(bookText);
         if (input < bookScore) {
@@ -142,10 +137,9 @@
       });
 
       resultMessage.textContent = found
-        ? 'Your score beats one or more book records!'
-        : 'Your score does not beat any records.';
+        ? `Your score beats one or more records in ${selectedGame.toUpperCase()}!`
+        : `Your score does not beat any records in ${selectedGame.toUpperCase()}.`;
     }
   </script>
 </body>
 </html>
-
