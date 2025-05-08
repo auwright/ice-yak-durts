@@ -11,13 +11,25 @@
     th { background-color: #f4f4f4; }
     a { text-decoration: none; color: #007BFF; }
     h2 { margin-top: 2em; color: #444; }
+    .highlight { background-color: #d4edda !important; }
+    .score-input { margin-bottom: 2em; }
+    input[type="number"] { padding: 6px; font-size: 1em; width: 100px; }
+    button { padding: 6px 12px; font-size: 1em; margin-left: 10px; cursor: pointer; }
   </style>
 </head>
 <body>
   <h1>Durts Records</h1>
   <p><a href="index.html">Back to Homepage</a></p>
 
-  <!-- Table 1: 301 -->
+  <div class="score-input">
+    <label for="userScore">Enter your Book Score:</label>
+    <input type="number" id="userScore" step="0.01" />
+    <button onclick="checkBookScore()">Check Score</button>
+    <p id="resultMessage"></p>
+  </div>
+
+  <!-- Tables (unchanged except added class for targeting rows) -->
+
   <h2>301</h2>
   <table>
     <thead>
@@ -28,25 +40,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>*6 1/3 Books</td>
-        <td>SW</td>
-        <td>11/08/2024</td>
-      </tr>
-      <tr>
-        <td>*6 1/3 Books</td>
-        <td>AW</td>
-        <td>11/02/24</td>
-      </tr>
-      <tr>
-        <td>9 Books</td>
-        <td>RS</td>
-        <td>03/07/2024</td>
-      </tr>
+      <tr><td>*6 1/3 Books</td><td>SW</td><td>11/08/2024</td></tr>
+      <tr><td>*6 1/3 Books</td><td>AW</td><td>11/02/24</td></tr>
+      <tr><td>9 Books</td><td>RS</td><td>03/07/2024</td></tr>
     </tbody>
   </table>
 
-  <!-- Table 2: 301 DI/DO -->
   <h2>301 DI/DO</h2>
   <table>
     <thead>
@@ -57,20 +56,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>*7 2/3 Books</td>
-        <td>SW</td>
-        <td>10/11/2024</td>
-      </tr>
-      <tr>
-        <td>8 2/3 Books</td>
-        <td>AW</td>
-        <td>04/15/2024</td>
-      </tr>
+      <tr><td>*7 2/3 Books</td><td>SW</td><td>10/11/2024</td></tr>
+      <tr><td>8 2/3 Books</td><td>AW</td><td>04/15/2024</td></tr>
     </tbody>
   </table>
 
-  <!-- Table 3: 501 -->
   <h2>501</h2>
   <table>
     <thead>
@@ -81,20 +71,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>*9 Books</td>
-        <td>SW</td>
-        <td>03/26/2025</td>
-      </tr>
-      <tr>
-        <td>14 2/3 Books</td>
-        <td>RS</td>
-        <td>01/17/2025</td>
-      </tr>
+      <tr><td>*9 Books</td><td>SW</td><td>03/26/2025</td></tr>
+      <tr><td>14 2/3 Books</td><td>RS</td><td>01/17/2025</td></tr>
     </tbody>
   </table>
 
-  <!-- Table 4: 901 -->
   <h2>901</h2>
   <table>
     <thead>
@@ -105,20 +86,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>*20 Books</td>
-        <td>SW</td>
-        <td>12/09/2024</td>
-      </tr>
-      <tr>
-        <td>24 Books</td>
-        <td>AW</td>
-        <td>04/15/2025</td>
-      </tr>
+      <tr><td>*20 Books</td><td>SW</td><td>12/09/2024</td></tr>
+      <tr><td>24 Books</td><td>AW</td><td>04/15/2025</td></tr>
     </tbody>
   </table>
-  
-  <!-- Table 5: Round the Clock -->
+
   <h2>Round the Clock</h2>
   <table>
     <thead>
@@ -129,17 +101,51 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>*10 1/3 Books</td>
-        <td>AW</td>
-        <td>01/14/2025</td>
-      </tr>
-      <tr>
-        <td>14 1/3 Books</td>
-        <td>SW</td>
-        <td>11/12/2024</td>
-      </tr>
+      <tr><td>*10 1/3 Books</td><td>AW</td><td>01/14/2025</td></tr>
+      <tr><td>14 1/3 Books</td><td>SW</td><td>11/12/2024</td></tr>
     </tbody>
   </table>
+
+  <script>
+    function parseBooks(text) {
+      // Remove asterisk, "Books", and trim
+      const cleaned = text.replace('*', '').replace('Books', '').trim();
+      const parts = cleaned.split(' ');
+
+      let total = 0;
+      parts.forEach(part => {
+        if (part.includes('/')) {
+          const [num, den] = part.split('/');
+          total += parseFloat(num) / parseFloat(den);
+        } else {
+          total += parseFloat(part);
+        }
+      });
+
+      return total;
+    }
+
+    function checkBookScore() {
+      const input = parseFloat(document.getElementById('userScore').value);
+      const resultMessage = document.getElementById('resultMessage');
+      const rows = document.querySelectorAll('table tbody tr');
+      let found = false;
+
+      rows.forEach(row => {
+        row.classList.remove('highlight');
+        const bookText = row.cells[0].textContent;
+        const bookScore = parseBooks(bookText);
+        if (input > bookScore) {
+          row.classList.add('highlight');
+          found = true;
+        }
+      });
+
+      resultMessage.textContent = found
+        ? 'Your score beats one or more book records!'
+        : 'Your score does not beat any records.';
+    }
+  </script>
 </body>
 </html>
+
